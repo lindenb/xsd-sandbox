@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="project2html.xsl"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:go="http://www.geneontology.org/dtds/go.dtd#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -10,6 +9,7 @@
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
 
 <xs:group name="is_group">
+
   <xs:choice>
       <xs:element name="is_a" type="go:IsA" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="part_of" type="go:PartOf" minOccurs="0" maxOccurs="unbounded"/>
@@ -18,26 +18,52 @@
       <xs:element name="regulates" type="go:Regulates" minOccurs="0" maxOccurs="unbounded"/>
   </xs:choice>
 </xs:group>
-
-
-  <xs:complexType name="Term">
+  
+  
+  <xs:group name="goterm">
     <xs:sequence>
-      <xs:element name="accession" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="synonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="definition" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:group ref="go:is_group"/>
-      <xs:element name="dbxref" type="go:DbXRef" minOccurs="0" maxOccurs="unbounded"/>
+       <xs:element name="term"  minOccurs="0" maxOccurs="unbounded" >
+	  <xs:complexType >
+	    <xs:sequence>
+	      <xs:element name="accession" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>
+	      <xs:element name="synonym" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="definition" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	      <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:group ref="go:is_group" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="dbxref" minOccurs="0" maxOccurs="unbounded">
+	        <xs:complexType>
+	            <xs:sequence>
+		      <xs:element name="database_symbol" type="xs:token" minOccurs="1" maxOccurs="1"/>
+		      <xs:element name="reference" type="xs:token" minOccurs="1" maxOccurs="1"/>
+		    </xs:sequence>
+		    <xs:attributeGroup ref="rdf:rdfparsetype"/>
+	        </xs:complexType>
+	      </xs:element>
+	    </xs:sequence>
+	    <xs:attributeGroup ref="rdf:rdfabout"/>
+	  </xs:complexType>
+       </xs:element>
     </xs:sequence>
-    <xs:attributeGroup ref="rdf:rdfabout"/>
-  </xs:complexType>
+  </xs:group>
+	  
 
   <xs:complexType name="AbstractRelation" abstract="true">
+            <xs:annotation>
+            <xs:documentation>
+           Base class of IsA PartOf etc... 
+            </xs:documentation>
+        </xs:annotation>	    
     <xs:attributeGroup ref="rdf:rdfrsrc"/>
   </xs:complexType>
 
   <xs:complexType name="IsA">
+  	<xs:annotation>
+            <xs:documentation>
+   The is a relation in GO is very simple: if we say A is a B, we mean that node A is a subtype of node B. For example, mitotic cell cycle is a cell cycle, or lyase activity is a catalytic activity. 
+              </xs:documentation>
+        </xs:annotation>
+        
         <xs:complexContent>
         <xs:extension base="go:AbstractRelation">
         </xs:extension>
@@ -45,6 +71,11 @@
   </xs:complexType>
 
   <xs:complexType name="PartOf">
+    	<xs:annotation>
+            <xs:documentation>
+   The relation part of is used to represent part-whole relationships in the Gene Ontology. part of has a specific meaning in GO, and a part of relation would only be added between A and B if B is necessarily part of A: wherever B exists, it is as part of A, and the presence of the B implies the presence of A. However, given the occurrence of A, we cannot say for certain that B exists. 
+              </xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
         <xs:extension base="go:AbstractRelation">
         </xs:extension>
@@ -59,6 +90,7 @@
   </xs:complexType>
 
   <xs:complexType name="PositivelyRegulates">
+        	
         <xs:complexContent>
         <xs:extension base="go:AbstractRelation">
         </xs:extension>
@@ -66,6 +98,11 @@
   </xs:complexType>
 
   <xs:complexType name="Regulates">
+        	<xs:annotation>
+            <xs:documentation>
+   Another common relationship in the Gene Ontology is that where one process directly affects the manifestation of another process or quality, i.e. the former regulates the latter. The target of the regulation may be another process—for example, regulation of a pathway or an enzymatic reaction—or it may be a quality, such as cell size or pH. Analogously to part of, this relation is used specifically to mean necessarily regulates: if both A and B are present, B always regulates A, but A may not always be regulated by B. 
+              </xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
         <xs:extension base="go:AbstractRelation">
         </xs:extension>
@@ -74,14 +111,19 @@
 
 
 
-  <xs:complexType name="DbXRef">
+
+ <xs:complexType name="Go">
+ <xs:annotation>
+            <xs:documentation>
+The Gene Ontology project is a major bioinformatics initiative with the aim of standardizing the representation of gene and gene product attributes across species and databases. 
+  </xs:documentation>
+        </xs:annotation>
     <xs:sequence>
-      <xs:element name="database_symbol" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="reference" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:group ref="rdf:rdfroot"/>
     </xs:sequence>
-    <xs:attributeGroup ref="rdf:rdfparsetype"/>
   </xs:complexType>
 
+<xs:element name="go" type="go:Go"/>
 
 </xs:schema>
 

@@ -9,22 +9,29 @@
     >
       <xs:import namespace="http://www.geneontology.org/dtds/go.dtd#" schemaLocation="go.xsd"/>
   <xs:attributeGroup name="rdfabout">
-    <xs:attribute name="about" type="xs:string"/>
+    <xs:attribute name="about" type="xs:anyURI"/>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="rdfrsrc">
-    <xs:attribute name="resource" type="xs:string"/>
+    <xs:attribute name="resource" type="xs:anyURI"/>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="rdfparsetype">
-    <xs:attribute name="parseType" type="xs:string" fixed="Resource" />
+    <xs:attribute name="parseType" type="xs:token" fixed="Resource" />
   </xs:attributeGroup>
 
-  <xs:complexType name="RDF">
+
+ <xs:complexType name="RDF">
     <xs:sequence>
-      <xs:element name="term" type="go:Term" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:group ref="go:goterm" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
+
+  <xs:group name="rdfroot">
+    <xs:sequence>
+      <xs:element name="RDF" type="rdf:RDF" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:group>
 
 
 </xs:schema>
