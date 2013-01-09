@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="project2html.xsl"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:go="http://www.geneontology.org/dtds/go.dtd#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    elementFormDefault="qualified"
+     attributeFormDefault="qualified"
+    >
+      <xs:import namespace="http://www.geneontology.org/dtds/go.dtd#" schemaLocation="go.xsd"/>
+  <xs:attributeGroup name="rdfabout">
+    <xs:attribute name="about" type="xs:string"/>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="rdfrsrc">
+    <xs:attribute name="resource" type="xs:string"/>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="rdfparsetype">
+    <xs:attribute name="parseType" type="xs:string" fixed="Resource" />
+  </xs:attributeGroup>
+
+  <xs:complexType name="RDF">
+    <xs:sequence>
+      <xs:element name="term" type="go:Term" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+</xs:schema>
+
+
