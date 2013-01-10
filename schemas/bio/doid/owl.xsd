@@ -8,40 +8,36 @@
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
     targetNamespace="http://www.w3.org/2002/07/owl#"
     elementFormDefault="qualified"
      attributeFormDefault="qualified"
     >
+<xs:annotation>
+  <xs:appinfo>
+    <jaxb:schemaBindings>
+       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
+      <jaxb:package name="org.w3._2002._07.owl"/>
+    </jaxb:schemaBindings>
+  </xs:appinfo>
+</xs:annotation>
+
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
   <xs:import namespace="http://www.w3.org/2000/01/rdf-schema#" schemaLocation="rdfs.xsd"/>
-  <xs:import namespace="http://www.geneontology.org/formats/oboInOwl#" schemaLocation="oboInOwl.xsd"/>
-  
-  <xs:attributeGroup name="rdfabout">
-    <xs:attribute name="about" type="xs:anyURI"/>
-  </xs:attributeGroup>
 
-  <xs:attributeGroup name="rdfrsrc">
-    <xs:attribute name="resource" type="xs:anyURI"/>
-  </xs:attributeGroup>
+<xs:complexType name="Term">
+ <xs:choice>
+   <xs:group ref="rdfs:group1"/>
+ </xs:choice>
+ <xs:attributeGroup ref="rdf:rdfabout"/>
+</xs:complexType>
 
-  <xs:attributeGroup name="rdfparsetype">
-    <xs:attribute name="parseType" type="xs:token" fixed="Resource" />
-  </xs:attributeGroup>
-
-
- <xs:complexType name="Class">
-    <xs:sequence>
-      <xs:group ref="go:goterm" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attributeGroup ref="rdf:rdfabout"/>
-  </xs:complexType>
-
-  <xs:group name="rdfroot">
-    <xs:sequence>
-      <xs:element name="Class" type="rdf:RDF" minOccurs="1" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:group>
-
+<xs:group name="group1">
+<xs:sequence>
+ <xs:element name="Class" type="owl:Term" />
+</xs:sequence>
+</xs:group>
 
 </xs:schema>
 
