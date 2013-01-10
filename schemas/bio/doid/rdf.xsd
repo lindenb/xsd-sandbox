@@ -42,7 +42,7 @@
 
  <xs:complexType name="RDF">
     <xs:sequence>
-      <xs:group ref="owl:group1" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:group ref="owl:terms" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 

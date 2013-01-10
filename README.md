@@ -8,3 +8,6 @@ Author:
   http://plindenbaum.blogspot.com
   @yokofakun
 
+CONTENT:
+	xsd schema for GeneOntology
+	xsd schema for DiseaseOntology

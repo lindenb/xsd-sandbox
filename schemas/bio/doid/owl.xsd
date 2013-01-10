@@ -25,15 +25,18 @@
 
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
   <xs:import namespace="http://www.w3.org/2000/01/rdf-schema#" schemaLocation="rdfs.xsd"/>
-
+  <xs:import namespace="http://www.geneontology.org/formats/oboInOwl#" schemaLocation="oboInOwl.xsd"/>
+  
+  
 <xs:complexType name="Term">
- <xs:choice>
+ <xs:sequence>
    <xs:group ref="rdfs:group1"/>
- </xs:choice>
+   <xs:group ref="oboInOwl:group1"/>
+ </xs:sequence>
  <xs:attributeGroup ref="rdf:rdfabout"/>
 </xs:complexType>
 
-<xs:group name="group1">
+<xs:group name="terms">
 <xs:sequence>
  <xs:element name="Class" type="owl:Term" />
 </xs:sequence>
