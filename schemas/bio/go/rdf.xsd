@@ -19,32 +19,31 @@
   </xs:appinfo>
 </xs:annotation>
     
-  <xs:attributeGroup name="rdfabout">
-    <xs:attribute name="about" type="xs:string"/>
+<xs:attributeGroup name="rdfabout">
+    <xs:attribute name="about" type="xs:anyURI"/>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="rdfrsrc">
-    <xs:attribute name="resource" type="xs:string"/>
+    <xs:attribute name="resource" type="xs:anyURI"/>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="rdfparsetype">
-    <xs:attribute name="parseType" type="xs:string" fixed="Resource" />
+    <xs:attribute name="parseType" type="xs:token" fixed="Resource" />
   </xs:attributeGroup>
 
 
-
-  <xs:complexType name="RDF">
+ <xs:complexType name="RDF">
     <xs:sequence>
-      <xs:group ref="go:goterm" />
+      <xs:group ref="go:goterm" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-
-<xs:group name="rdfroot">
-  <xs:sequence>
+  <xs:group name="rdfroot">
+    <xs:sequence>
       <xs:element name="RDF" type="rdf:RDF" minOccurs="1" maxOccurs="1"/>
-  </xs:sequence>
-</xs:group>
+    </xs:sequence>
+  </xs:group>
+
 
 </xs:schema>
 
