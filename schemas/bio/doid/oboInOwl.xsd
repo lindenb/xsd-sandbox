@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:doid="http://purl.obolibrary.org/obo/doid#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
+    targetNamespace="http://www.geneontology.org/formats/oboInOwl#"
+    elementFormDefault="qualified"
+     attributeFormDefault="qualified"
+    >
+<xs:annotation>
+  <xs:appinfo>
+    <jaxb:schemaBindings>
+       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
+      <jaxb:package name="org.geneontology.formats.oboInOwl"/>
+    </jaxb:schemaBindings>
+  </xs:appinfo>
+</xs:annotation>
+
+
+<xs:group name="group1">
+<xs:sequence>
+ <xs:element name="id" type="xs:token" />
+ <xs:element name="hasRelatedSynonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+ <xs:element name="hasAlternativeId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+ <xs:element name="hasExactSynonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+ <xs:element name="hasNarrowSynonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+ <xs:element name="hasDbXref" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:group>
+
+</xs:schema>
+
+
