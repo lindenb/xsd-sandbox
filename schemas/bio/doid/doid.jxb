@@ -15,7 +15,49 @@ jxb:extensionBindingPrefixes="ci "
 jxb:version="2.0"
 >
 
+
+<jxb:bindings schemaLocation="oboInOwl.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.diseaseontology.oboInOwl"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+</jxb:bindings>
+
+
+<jxb:bindings schemaLocation="owl.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.diseaseontology.owl"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+</jxb:bindings>
+
+<jxb:bindings schemaLocation="rdfs.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.diseaseontology.rdfs"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+</jxb:bindings>
+
+<jxb:bindings schemaLocation="doid.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.diseaseontology.doid"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+</jxb:bindings>
+
+
 <jxb:bindings schemaLocation="rdf.xsd">
+
+<jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.diseaseontology.rdf"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
  <!-- here we use an XPATH expression to tell xjc about which part
  of the XML schema we want to change -->
  <jxb:bindings node="/xs:schema/xs:complexType[@name='RDF']">
@@ -54,7 +96,9 @@ jxb:version="2.0"
   	System.err.println("usage: doid.owl doi1 doi2 doi3 ...");
   	return;
   	}
-  javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance("org.w3._2002._07.owl:org.w3._1999._02._22_rdf_syntax_ns_");
+  javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
+  	"generated.org.diseaseontology.owl:generated.org.diseaseontology.rdf"
+  	);
   javax.xml.bind.Unmarshaller unmarshaller=jaxbCtxt.createUnmarshaller();
   RDF rdf=(RDF)((javax.xml.bind.JAXBElement)unmarshaller.unmarshal(new java.io.File(args[0]))).getValue();
   java.util.Map&lt;String,Term&gt; uri2term=new java.util.HashMap&lt;String,Term&gt;(rdf.getTerms().size());

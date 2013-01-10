@@ -14,14 +14,6 @@
     elementFormDefault="qualified"
      attributeFormDefault="qualified"
     >
-<xs:annotation>
-  <xs:appinfo>
-    <jaxb:schemaBindings>
-       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
-      <jaxb:package name="org.geneontology.formats.oboInOwl"/>
-    </jaxb:schemaBindings>
-  </xs:appinfo>
-</xs:annotation>
 
 
 <xs:group name="group1">

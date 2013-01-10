@@ -12,17 +12,9 @@
     jaxb:version="2.0"
     targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     elementFormDefault="qualified"
-     attributeFormDefault="qualified"
+    attributeFormDefault="qualified"
     >
 
-<xs:annotation>
-  <xs:appinfo>
-    <jaxb:schemaBindings>
-       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
-      <jaxb:package name="org.w3._1999._02._22_rdf_syntax_ns_"/>
-    </jaxb:schemaBindings>
-  </xs:appinfo>
-</xs:annotation>
 
       <xs:import namespace="http://purl.obolibrary.org/obo/doid#" schemaLocation="doid.xsd"/>
       <xs:import namespace="http://www.w3.org/2002/07/owl#" schemaLocation="owl.xsd"/>

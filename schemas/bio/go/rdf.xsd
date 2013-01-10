@@ -10,16 +10,9 @@
     >
   <xs:import namespace="http://www.geneontology.org/dtds/go.dtd#" schemaLocation="go.xsd"/>
     
-<xs:annotation>
-  <xs:appinfo>
-    <jaxb:schemaBindings>
-       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
-      <jaxb:package name="org.w3._1999._02._22_rdf_syntax_ns_"/>
-    </jaxb:schemaBindings>
-  </xs:appinfo>
-</xs:annotation>
+
     
-<xs:attributeGroup name="rdfabout">
+  <xs:attributeGroup name="rdfabout">
     <xs:attribute name="about" type="xs:anyURI"/>
   </xs:attributeGroup>
 

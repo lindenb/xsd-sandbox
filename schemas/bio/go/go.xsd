@@ -8,14 +8,7 @@
     targetNamespace="http://www.geneontology.org/dtds/go.dtd#"
     attributeFormDefault="qualified"
     >
-<xs:annotation>
-  <xs:appinfo>
-    <jaxb:schemaBindings>
-       <!-- there is a problem with XJC, some versions ignore the '#' at the end, some append a '_' at the end of the package -->
-      <jaxb:package name="org.geneontology.dtds.go"/>
-    </jaxb:schemaBindings>
-  </xs:appinfo>
-</xs:annotation>   
+
    
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
 
