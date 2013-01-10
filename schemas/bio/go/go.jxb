@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:go="http://www.geneontology.org/dtds/go.dtd#"
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+jxb:extensionBindingPrefixes="ci "
+jxb:version="2.0"
+>
+
+<jxb:bindings schemaLocation="go.xsd">
+ <!-- here we use an XPATH expression to tell xjc about which part
+ of the XML schema we want to change -->
+ <jxb:bindings node="/xs:schema/xs:complexType[@name='Go']">
+  <ci:code>
+
+ public static final String NS="http://www.geneontology.org/dtds/go.dtd#";
+
+ private static void recursive(
+ 	java.util.Map&lt;String,org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term&gt; uri2term,
+ 	java.util.Set&lt;String&gt; uris,
+ 	String id
+ 	)
+ 	{
+ 	if(uris.contains(id)) return;
+	org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term t=uri2term.get(id);
+ 	if(t==null) return;
+ 	uris.add(id);
+ 	
+ 	//find parents
+ 	for(org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term term:uri2term.values())
+ 		{
+ 		for(IsA sub:term.getIsA())
+ 			{
+ 			if(sub.getResource().equals(id))
+ 				{
+ 				recursive(uri2term,uris,term.getAbout());
+ 				}
+ 			}
+ 		}
+	}
+ public static void main(String args[]) throws Exception
+  {
+  final String prefix="http://www.geneontology.org/go#";
+  if(args.length&lt;2)
+  	{
+  	System.err.println("usage: doid.owl doi1 doi2 doi3 ...");
+  	return;
+  	}
+  javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance("org.geneontology.dtds.go:org.w3._1999._02._22_rdf_syntax_ns_");
+  javax.xml.bind.Unmarshaller unmarshaller=jaxbCtxt.createUnmarshaller();
+  Go go=(Go)((javax.xml.bind.JAXBElement)unmarshaller.unmarshal(new java.io.File(args[0]))).getValue();
+  java.util.Map&lt;String,org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term&gt; uri2term=new   java.util.HashMap&lt;String,org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term&gt;(go.getRDF().getTerms().size());
+  java.util.Set&lt;String&gt; uris=new java.util.HashSet&lt;String&gt;();
+  for(org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term t:go.getRDF().getTerms())
+  	{
+  	uri2term.put(t.getAbout(),t);
+  	}
+ for(int optind=1;optind &lt; args.length;++optind)
+ 	{
+ 	String id=args[optind];
+ 	if(id.startsWith("GO_")) id="GO:"+id.substring(3).trim();
+ 	if(!id.startsWith(prefix)) id=prefix+id;
+ 	
+ 	recursive(uri2term,uris,id);
+ 	}
+  for(String uri:uris)
+  	{
+  	org.w3._1999._02._22_rdf_syntax_ns_.RDF.Term t=uri2term.get(uri);
+  	System.out.println(uri+"\t"+t.getAccession()+"\t"+t.getName());
+	}
+  }
+
+</ci:code>
+ </jxb:bindings>
+</jxb:bindings>
+
+</jxb:bindings>

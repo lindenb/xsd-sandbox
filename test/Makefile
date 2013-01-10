@@ -11,15 +11,16 @@ all:doid go
 	$(MAKE) clean
 
 go: go.xml
-	xmllint  --noout --schema $(GOXSD) $<
+	#xmllint  --noout --schema $(GOXSD) $<
 	mkdir -p tmp
-	${XJC} -d tmp $(GOXSD)
+	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GOXSD))) -d tmp $(GOXSD)
 	${JAVAC} -d tmp -sourcepath tmp  TestSchema.java \
 		tmp/org/w3/_1999/_02/_22_rdf_syntax_ns_/ObjectFactory.java \
 		tmp/org/geneontology/dtds/go/ObjectFactory.java
-	${JAVA}  -cp tmp TestSchema $(GOXSD) \
+	${JAVA}  -cp tmp TestSchema null \
 		"org.geneontology.dtds.go:org.w3._1999._02._22_rdf_syntax_ns_"  $< |\
 		head -n 20
+	${JAVA}  -cp tmp org.geneontology.dtds.go.Go $< GO:0010566
 	rm -rf tmp
 
 go.xml:

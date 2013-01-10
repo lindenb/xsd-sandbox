@@ -31,7 +31,7 @@
 </xs:group>
   
   
-  <xs:group name="goterm">
+  <xs:group name="terms">
     <xs:sequence>
        <xs:element name="term"  minOccurs="0" maxOccurs="unbounded" >
 	  <xs:complexType >
@@ -41,7 +41,11 @@
 	      <xs:element name="synonym" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
 	      <xs:element name="definition" type="xs:string" minOccurs="0" maxOccurs="1"/>
 	      <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-	      <xs:group ref="go:is_group" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="is_a" type="go:IsA" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="part_of" type="go:PartOf" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="negatively_regulates" type="go:NegativelyRegulates" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="positively_regulates" type="go:PositivelyRegulates" minOccurs="0" maxOccurs="unbounded"/>
+	      <xs:element name="regulates" type="go:Regulates" minOccurs="0" maxOccurs="unbounded"/>
 	      <xs:element name="dbxref" minOccurs="0" maxOccurs="unbounded">
 	        <xs:complexType>
 	            <xs:sequence>
