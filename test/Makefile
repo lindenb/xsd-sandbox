@@ -3,7 +3,7 @@ JAVAC=${JAVA_HOME}/bin/javac
 JAVA=${JAVA_HOME}/bin/java
 XJC=${JAVA_HOME}/bin/xjc
 
-.PHONY=all go clean
+.PHONY=all doid go clean
 all:go
 	$(MAKE) clean
 
@@ -21,5 +21,11 @@ go.xml:
 	curl "http://archive.geneontology.org/latest-termdb/go_daily-termdb.rdf-xml.gz" |\
 	gunzip -c | grep -v "<!DOCTYPE " > $@
 
+doid: doid.owl
+
+
+doid.owl:
+	curl "http://www.berkeleybop.org/ontologies/$@" > $@
+
 clean:
-	rm -rf tmp go.xml *~
+	rm -rf tmp go.xml doid.owl *~
