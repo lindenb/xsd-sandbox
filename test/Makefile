@@ -19,7 +19,8 @@ go: go.xml
 	${JAVA}  -cp tmp TestSchema null \
 		"generated.org.genontology.go:generated.org.genontology.rdf"  $< |\
 		head -n 20
-	${JAVA}  -cp tmp generated.org.genontology.go.Go $< GO:0010566
+	${JAVA}  -cp tmp generated.org.genontology.go.Go descendants $< GO:0010566
+	${JAVA}  -cp tmp generated.org.genontology.go.Go shortestpath $< GO:1900848
 	rm -rf tmp
 
 go.xml:

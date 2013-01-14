@@ -33,6 +33,27 @@ jxb:version="2.0"
 
  public static final String NS="http://www.geneontology.org/dtds/go.dtd#";
 
+ private static java.util.List&lt;generated.org.genontology.rdf.RDF.Term&gt;
+ 	shortestpath(
+ 	java.util.Map&lt;String,generated.org.genontology.rdf.RDF.Term&gt; uri2term,
+ 	generated.org.genontology.rdf.RDF.Term term,
+ 	java.util.List&lt;generated.org.genontology.rdf.RDF.Term&gt; path
+ 	)
+ 	{
+ 	java.util.List&lt;generated.org.genontology.rdf.RDF.Term&gt; best=null;
+ 	path.add(term);
+ 	for(IsA sub:term.getIsA())
+ 		{
+ 		if(sub.getResource().equals(term.getAbout())) continue;
+ 		java.util.List&lt;generated.org.genontology.rdf.RDF.Term&gt; copy=new java.util.ArrayList&lt;generated.org.genontology.rdf.RDF.Term&gt;(path);
+ 		generated.org.genontology.rdf.RDF.Term parent=uri2term.get(sub.getResource());
+ 		if(parent==null) continue;
+ 		copy=shortestpath(uri2term,parent,copy);
+ 		if(best==null || copy.size()&lt;best.size()) best=copy;
+ 		}
+ 	return best==null?path:best;
+ 	}
+
  private static void recursive(
  	java.util.Map&lt;String,generated.org.genontology.rdf.RDF.Term&gt; uri2term,
  	java.util.Set&lt;String&gt; uris,
@@ -61,32 +82,64 @@ jxb:version="2.0"
   final String prefix="http://www.geneontology.org/go#";
   if(args.length&lt;2)
   	{
-  	System.err.println("usage: doid.owl doi1 doi2 doi3 ...");
+  	System.err.println("usage: descendants doid.owl doi1 doi2 doi3 ...");
+  	System.err.println("usage: shortestpath doid.owl doi1 doi2 doi3 ...");
   	return;
   	}
   javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
   	"generated.org.genontology.go:generated.org.genontology.rdf"
   	);
   javax.xml.bind.Unmarshaller unmarshaller=jaxbCtxt.createUnmarshaller();
-  Go go=(Go)((javax.xml.bind.JAXBElement)unmarshaller.unmarshal(new java.io.File(args[0]))).getValue();
+  Go go=(Go)((javax.xml.bind.JAXBElement)unmarshaller.unmarshal(new java.io.File(args[1]))).getValue();
   java.util.Map&lt;String,generated.org.genontology.rdf.RDF.Term&gt; uri2term=new   java.util.HashMap&lt;String,generated.org.genontology.rdf.RDF.Term&gt;(go.getRDF().getTerms().size());
-  java.util.Set&lt;String&gt; uris=new java.util.HashSet&lt;String&gt;();
   for(generated.org.genontology.rdf.RDF.Term t:go.getRDF().getTerms())
+	  	{
+	  	uri2term.put(t.getAbout(),t);
+	  	}
+  if(args[0].equals("descendants"))
   	{
-  	uri2term.put(t.getAbout(),t);
-  	}
- for(int optind=1;optind &lt; args.length;++optind)
- 	{
- 	String id=args[optind];
- 	if(id.startsWith("GO_")) id="GO:"+id.substring(3).trim();
- 	if(!id.startsWith(prefix)) id=prefix+id;
- 	
- 	recursive(uri2term,uris,id);
- 	}
-  for(String uri:uris)
-  	{
-  	generated.org.genontology.rdf.RDF.Term t=uri2term.get(uri);
-  	System.out.println(uri+"\t"+t.getAccession()+"\t"+t.getName());
+	  java.util.Set&lt;String&gt; uris=new java.util.HashSet&lt;String&gt;();
+	  
+	 for(int optind=2;optind &lt; args.length;++optind)
+	 	{
+	 	String id=args[optind];
+	 	if(id.startsWith("GO_")) id="GO:"+id.substring(3).trim();
+	 	if(!id.startsWith(prefix)) id=prefix+id;
+	 	
+	 	recursive(uri2term,uris,id);
+	 	}
+	  for(String uri:uris)
+	  	{
+	  	generated.org.genontology.rdf.RDF.Term t=uri2term.get(uri);
+	  	System.out.println(uri+"\t"+t.getAccession()+"\t"+t.getName());
+		}
+	}
+else if(args[0].equals("shortestpath"))
+	{
+	for(int optind=2;optind &lt; args.length;++optind)
+	 	{
+	 	String id=args[optind];
+	 	if(id.startsWith("GO_")) id="GO:"+id.substring(3).trim();
+	 	if(!id.startsWith(prefix)) id=prefix+id;
+	 	generated.org.genontology.rdf.RDF.Term t=uri2term.get(id);
+	 	if(t==null) continue;
+	 	java.util.List&lt;generated.org.genontology.rdf.RDF.Term&gt; path=shortestpath(
+	 		uri2term,
+	 		t,
+	 		new java.util.ArrayList&lt;generated.org.genontology.rdf.RDF.Term&gt;()
+	 		);
+	 	if(path==null) continue;
+	        for(generated.org.genontology.rdf.RDF.Term t2:path)
+		  	{
+		  	System.out.print(t2.getAccession()+"\t");
+			}
+		System.out.println();
+	 	}
+	}
+else
+	{
+	System.err.println("unknown program");
+	System.exit(-1);
 	}
   }
 
