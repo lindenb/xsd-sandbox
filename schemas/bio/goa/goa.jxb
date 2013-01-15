@@ -54,16 +54,16 @@ jxb:version="2.0"
 	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, true);
 	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
 	w.writeStartDocument("UTF-8","1.0");
-	w.writeStartElement("goa","annotations",NS);
+	w.writeStartElement("goa","associations",NS);
 
 	java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
 	while((line=in.readLine())!=null)
 		{
 		String tokens[]=tab.split(line);
-		com.github.lindenb.cardioserve.goa.Annotation rec=new com.github.lindenb.cardioserve.goa.Annotation();
-		javax.xml.bind.JAXBElement&lt;com.github.lindenb.cardioserve.goa.Annotation&gt; jxb=new javax.xml.bind.JAXBElement&lt;com.github.lindenb.cardioserve.goa.Annotation&gt;(
-				new javax.xml.namespace.QName(NS, "annotation","goa"),
-				com.github.lindenb.cardioserve.goa.Annotation.class,
+		Association rec=new Association();
+		javax.xml.bind.JAXBElement&lt;Association&gt; jxb=new javax.xml.bind.JAXBElement&lt;Association&gt;(
+				new javax.xml.namespace.QName(NS, "association","goa"),
+				Association.class,
 				rec
 				);
 		marshaller.marshal(rec, w);
