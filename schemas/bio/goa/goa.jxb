@@ -29,7 +29,7 @@ jxb:version="2.0"
 <jxb:bindings node="/xs:schema/xs:complexType[@name='Associations']">
   <ci:code>
   
-  public static final String NS=com.github.lindenb.cardioserve.goa.Annotation.NS;
+  public static final String NS=Association.NS;
   
   private static  void parse(java.io.BufferedReader in) throws
   		java.io.IOException,
@@ -41,7 +41,7 @@ jxb:version="2.0"
 			  	"generated.ebi.ac.uk.goa"
 			  	);
 	javax.xml.bind.Marshaller marshaller=jaxbCtxt.createMarshaller();
-	marshaller.setProperty("jaxb.fragment", true);
+	marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 	marshaller.setProperty("jaxb.formatted.output",true);
 
 	String line=in.readLine();
@@ -51,27 +51,55 @@ jxb:version="2.0"
 		System.exit(-1);
 		}
 	javax.xml.stream.XMLOutputFactory xmlfactory= javax.xml.stream.XMLOutputFactory.newInstance();
-	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, true);
+	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
 	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
+	//w.setDefaultNamespace(NS);
 	w.writeStartDocument("UTF-8","1.0");
 	w.writeStartElement("goa","associations",NS);
-
+	w.writeAttribute("version",header);
+	//w.writeNamespace("",NS);
 	java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
+	Associations associations=new Associations();
 	while((line=in.readLine())!=null)
 		{
 		String tokens[]=tab.split(line);
 		Association rec=new Association();
-		javax.xml.bind.JAXBElement&lt;Association&gt; jxb=new javax.xml.bind.JAXBElement&lt;Association&gt;(
-				new javax.xml.namespace.QName(NS, "association","goa"),
-				Association.class,
-				rec
-				);
-		marshaller.marshal(rec, w);
+		rec.setDb(tokens[0]);
+		rec.setObjectId(tokens[1]);
+		rec.setObjectSymbol(tokens[2]);
+		if(!tokens[3].isEmpty()) rec.setQualifier(tokens[3]);
+		rec.setGoId(tokens[4]);
+		rec.setDbRef(tokens[5]);
+		rec.setEvidence(tokens[6]);
+		for(String with: tokens[7].split("[|]"))
+			{
+			if(!with.isEmpty()) rec.getWith().add(with);
+			}
+		rec.setAspect(tokens[8]);
+		rec.setDbObjectName(tokens[9]);
+		for(String with: tokens[10].split("[|]"))
+			{
+			if(!with.isEmpty()) rec.getSynonym().add(with);
+			}
+		rec.setDbObjectType(tokens[11]);
+		rec.setTaxonId(tokens[12]);
+		rec.setDate(tokens[13]);
+		rec.setAssignedBy(tokens[14]);
+		if(tokens.length>15) rec.setAnnotation(tokens[15]);
+		associations.getAssociation().add(rec);
+		//marshaller.marshal(jxb, System.err);
 		}
+	javax.xml.bind.JAXBElement&lt;Associations&gt; jxb=new javax.xml.bind.JAXBElement&lt;Associations&gt;(
+			new javax.xml.namespace.QName("associations"),
+			Associations.class,
+			associations
+			);
+		//marshaller.marshal(jxb, w);
 	w.writeEndElement();
 	w.writeEndDocument();
 	w.flush();
 	w.close();
+	marshaller.marshal(jxb,System.err);
   	}
     
  public static void main(String args[]) throws Exception

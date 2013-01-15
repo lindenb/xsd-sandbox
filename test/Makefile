@@ -2,13 +2,25 @@ JAVA_HOME:=$(dir $(shell which java))..
 JAVAC=${JAVA_HOME}/bin/javac
 JAVA=${JAVA_HOME}/bin/java
 XJC=${JAVA_HOME}/bin/xjc
+GOAXSD=../schemas/bio/goa/goa.xsd
 GOXSD=../schemas/bio/go/go.xsd
 DOIDXSD=../schemas/bio/doid/doid.xsd
 
 
-.PHONY=all doid go clean
+.PHONY=all goa doid go clean
 all:doid go
 	$(MAKE) clean
+
+goa: gene_association.goa_human
+	mkdir -p tmp
+	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GOAXSD))) -d tmp $(GOAXSD)
+	${JAVAC} -d tmp -sourcepath tmp  `find tmp -name "ObjectFactory.java"`
+	${JAVA}  -cp tmp generated.ebi.ac.uk.goa.Associations $<  | xmllint --format - 
+
+gene_association.goa_human:
+	curl "ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/HUMAN/$@.gz" |\
+	gunzip -c  | head -n 1000 > $@
+	
 
 go: go.xml
 	#xmllint  --noout --schema $(GOXSD) $<
