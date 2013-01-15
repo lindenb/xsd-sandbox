@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:goa="http://www.ebi.ac.uk/GOA"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
+    elementFormDefault="qualified"
+    targetNamespace="http://www.ebi.ac.uk/GOA"
+    attributeFormDefault="qualified"
+    >
+ <xs:annotation><xs:documentation>XML Structures for GeneOntology Annotations.</xs:documentation></xs:annotation>
+   
+
+  
+  <xs:complexType name="Association">
+  	<xs:annotation><xs:documentation>A Record in GeneOntology Annotation</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="db" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Database from which annotated entry has been taken.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="objectId" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>A unique identifier in the database for the item being annotated.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="objectSymbol" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>A (unique and valid) symbol (gene name) that corresponds to the DB_Object_ID.
+			An officially approved gene symbol will be used in this field when available.
+			Alternatively, other gene symbols or locus names are applied.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="qualifier" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>This column is used for flags that modify the interpretation of an annotation.
+			If not null, then values in this field can equal.</xs:documentation></xs:annotation>
+      </xs:element>
+       <xs:element name="goId" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>The GO identifier for the term attributed to the DB_Object_ID.</xs:documentation></xs:annotation>
+      </xs:element>
+       <xs:element name="dbRef" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>A single reference cited to support an annotation.</xs:documentation></xs:annotation>
+      </xs:element>
+        <xs:element name="evidence"  minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>One of either EXP, IMP, IC, IGI, IPI, ISS, IDA, IEP, IEA, TAS, NAS,NR, ND or RCA.</xs:documentation></xs:annotation>
+      	   <xs:simpleType>
+	    <xs:restriction base="xs:string">
+	      <xs:enumeration value="EXP"/>
+	      <xs:enumeration value="IMP"/>
+	      <xs:enumeration value="IC"/>
+	      <xs:enumeration value="IGI"/>
+	    </xs:restriction>
+	  </xs:simpleType>
+      </xs:element>
+       <xs:element name="with" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>An additional identifier to support annotations using certain evidence codes (including IEA, IPI, IGI, IMP, IC and ISS evidences)..</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="aspect" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>One of the three ontologies, corresponding to the GO identifier applied. P (biological process), F (molecular function) or C (cellular component)..</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="dbObjectName" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Name of protein
+		The full UniProt protein name will be present here,
+		if available from UniProtKB. If a name cannot be added, this field
+		will be left empty.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="dbObjectType" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>What kind of entity is being annotated.</xs:documentation></xs:annotation>
+      </xs:element>
+       <xs:element name="taxonId" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Identifier for the species being annotated.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="Date" type="xs:string" minOccurs="0" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>The date of last annotation update in the format 'YYYYMMDD'.</xs:documentation></xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+	  
+
+
+
+
+ <xs:complexType name="Associations">
+ <xs:annotation>
+            <xs:documentation>
+
+  </xs:documentation>
+        </xs:annotation>
+    <xs:sequence>
+      <xs:element name="association" type="goa:Association"/>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string"/>
+  </xs:complexType>
+
+<xs:element name="associations" type="goa:Associations"/>
+
+</xs:schema>
+
+
+
+
