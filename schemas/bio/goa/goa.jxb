@@ -28,19 +28,70 @@ jxb:version="2.0"
  
 <jxb:bindings node="/xs:schema/xs:complexType[@name='Associations']">
   <ci:code>
+  
+  public static final String NS=com.github.lindenb.cardioserve.goa.Annotation.NS;
+  
+  private static  void parse(java.io.BufferedReader in) throws
+  		java.io.IOException,
+  		javax.xml.bind.JAXBException,
+  		javax.xml.stream.XMLStreamException
+  	{
+	  final String header="!gaf-version: 2.0";
+	 javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
+			  	"generated.ebi.ac.uk.goa"
+			  	);
+	javax.xml.bind.Marshaller marshaller=jaxbCtxt.createMarshaller();
+	marshaller.setProperty("jaxb.fragment", true);
+	marshaller.setProperty("jaxb.formatted.output",true);
+
+	String line=in.readLine();
+	if(line==null || !line.equals(header))
+		{
+		System.err.println("header is not "+header);
+		System.exit(-1);
+		}
+	javax.xml.stream.XMLOutputFactory xmlfactory= javax.xml.stream.XMLOutputFactory.newInstance();
+	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, true);
+	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
+	w.writeStartDocument("UTF-8","1.0");
+	w.writeStartElement("goa","annotations",NS);
+
+	java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
+	while((line=in.readLine())!=null)
+		{
+		String tokens[]=tab.split(line);
+		com.github.lindenb.cardioserve.goa.Annotation rec=new com.github.lindenb.cardioserve.goa.Annotation();
+		javax.xml.bind.JAXBElement&lt;com.github.lindenb.cardioserve.goa.Annotation&gt; jxb=new javax.xml.bind.JAXBElement&lt;com.github.lindenb.cardioserve.goa.Annotation&gt;(
+				new javax.xml.namespace.QName(NS, "annotation","goa"),
+				com.github.lindenb.cardioserve.goa.Annotation.class,
+				rec
+				);
+		marshaller.marshal(rec, w);
+		}
+	w.writeEndElement();
+	w.writeEndDocument();
+	w.flush();
+	w.close();
+  	}
+    
  public static void main(String args[]) throws Exception
   {
-  if(args.length&lt;2)
+  
+  if(args.length==0)
+	{
+	parse(new java.io.BufferedReader(new java.io.InputStreamReader(System.in)));
+	}
+  else if(args.length==1)
   	{
-  	System.err.println("usage: (goa.tsv|stdin)");
-  	return;
+	  parse(new java.io.BufferedReader(new java.io.FileReader(args[0]))); 
   	}
-  javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
-  	"generated.ebi.ac.uk.goa"
-  	);
-  javax.xml.bind.Unmarshaller unmarshaller=jaxbCtxt.createUnmarshaller();
-
+  else
+  {
+	  System.err.println("usage: (goa.fil|stdin)");
+	  System.exit(-1);
   }
+  }
+
 
 </ci:code>
  </jxb:bindings>
