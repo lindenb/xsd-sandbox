@@ -14,12 +14,14 @@ all:doid go
 goa: gene_association.goa_human
 	mkdir -p tmp
 	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GOAXSD))) -d tmp $(GOAXSD)
-	${JAVAC} -d tmp -sourcepath tmp  `find tmp -name "ObjectFactory.java"`
-	${JAVA}  -cp tmp generated.ebi.ac.uk.goa.Associations $<  | xmllint --format - 
+	${JAVAC} -d tmp -sourcepath tmp  `find tmp -name "*.java"`
+	${JAVA}  -cp tmp generated.uk.ac.ebi.goa.Associations $< > tmp/goa.xml
+	xmllint  --noout --schema $(GOAXSD) tmp/goa.xml
+	rm -rf tmp
 
 gene_association.goa_human:
 	curl "ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/HUMAN/$@.gz" |\
-	gunzip -c  | head -n 2 > $@
+	gunzip -c  > $@
 	
 
 go: go.xml
@@ -27,7 +29,7 @@ go: go.xml
 	mkdir -p tmp
 	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GOXSD))) -d tmp $(GOXSD)
 	${JAVAC} -d tmp -sourcepath tmp  TestSchema.java \
-		`find tmp -name "ObjectFactory.java"` 
+		`find tmp -name "*.java"` 
 	${JAVA}  -cp tmp TestSchema null \
 		"generated.org.genontology.go:generated.org.genontology.rdf"  $< |\
 		head -n 20
@@ -43,7 +45,7 @@ doid: doid.owl
 	mkdir -p tmp
 	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(DOIDXSD))) -d tmp $(DOIDXSD) 
 	${JAVAC} -d tmp -sourcepath tmp  TestSchema.java \
-		`find tmp -name "ObjectFactory.java"` 
+		`find tmp -name "*.java"` 
 	${JAVA}  -cp tmp TestSchema null \
 		"generated.org.diseaseontology.owl:generated.org.diseaseontology.rdf"  $< |\
 		head -n 20
@@ -54,4 +56,4 @@ doid.owl:
 	curl "http://www.berkeleybop.org/ontologies/$@" > $@
 
 clean:
-	rm -rf tmp go.xml doid.owl *~
+	rm -rf tmp go.xml doid.owl gene_association.goa_human *~

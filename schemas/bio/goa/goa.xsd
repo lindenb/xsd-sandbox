@@ -7,7 +7,7 @@
      version="1.0"
     elementFormDefault="qualified"
     targetNamespace="http://www.ebi.ac.uk/GOA"
-    attributeFormDefault="qualified"
+    attributeFormDefault="unqualified"
     >
  <xs:annotation><xs:documentation>XML Structures for GeneOntology Annotations.</xs:documentation></xs:annotation>
    
@@ -27,7 +27,7 @@
 			An officially approved gene symbol will be used in this field when available.
 			Alternatively, other gene symbols or locus names are applied.</xs:documentation></xs:annotation>
       </xs:element>
-      <xs:element name="qualifier" type="xs:string" minOccurs="0" maxOccurs="1">
+      <xs:element name="qualifier" type="xs:string" minOccurs="0" maxOccurs="unbounded">
       	 <xs:annotation><xs:documentation>This column is used for flags that modify the interpretation of an annotation.
 			If not null, then values in this field can equal.</xs:documentation></xs:annotation>
       </xs:element>
@@ -45,6 +45,19 @@
 	      <xs:enumeration value="IMP"/>
 	      <xs:enumeration value="IC"/>
 	      <xs:enumeration value="IGI"/>
+	      <xs:enumeration value="IEA"/>
+	      <xs:enumeration value="IDA"/>
+	      <xs:enumeration value="IEP"/>
+	      <xs:enumeration value="TAS"/>
+	      <xs:enumeration value="NAS"/>
+	      <xs:enumeration value="NR"/>
+	      <xs:enumeration value="ND"/>
+	      <xs:enumeration value="RCA"/>
+	      <xs:enumeration value="ISS"/>
+	      <xs:enumeration value="IPI"/>
+	      <xs:enumeration value="IBA"/>
+	      <xs:enumeration value="IKR"/>
+	      <xs:enumeration value="IRD"/>
 	    </xs:restriction>
 	  </xs:simpleType>
       </xs:element>
@@ -72,7 +85,7 @@ provided pipe-separated, if available from UniProtKB..</xs:documentation></xs:an
       <xs:element name="dbObjectType" type="xs:string" minOccurs="0" maxOccurs="1">
       	 <xs:annotation><xs:documentation>What kind of entity is being annotated.</xs:documentation></xs:annotation>
       </xs:element>
-       <xs:element name="taxonId" type="xs:string" minOccurs="0" maxOccurs="1">
+       <xs:element name="taxonId" type="xs:string" minOccurs="0" maxOccurs="unbounded">
       	 <xs:annotation><xs:documentation>Identifier for the species being annotated.</xs:documentation></xs:annotation>
       </xs:element>
       <xs:element name="Date" type="xs:string" minOccurs="0" maxOccurs="1">
@@ -81,7 +94,7 @@ provided pipe-separated, if available from UniProtKB..</xs:documentation></xs:an
       <xs:element name="assignedBy" type="xs:string" minOccurs="1" maxOccurs="1">
       	 <xs:annotation><xs:documentation>Attribute describing the source of the annotation. </xs:documentation></xs:annotation>
       </xs:element>
-      <xs:element name="annotation" type="xs:string" minOccurs="1" maxOccurs="1">
+      <xs:element name="annotation" type="xs:string" minOccurs="0" maxOccurs="unbounded">
       	 <xs:annotation><xs:documentation>Contains cross references to other ontologies/databases that can be used to qualify or
 enhance the GO term applied in the annotation.</xs:documentation></xs:annotation>
       </xs:element>
