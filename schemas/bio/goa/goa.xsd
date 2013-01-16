@@ -104,8 +104,7 @@ enhance the GO term applied in the annotation.</xs:documentation></xs:annotation
     <xs:attribute name="version" type="xs:string"/>
   </xs:complexType>
 
-<xs:element name="associations" type="goa:Associations">
-</xs:element>
+<xs:element name="associations" type="goa:Associations"/>
 
 </xs:schema>
 

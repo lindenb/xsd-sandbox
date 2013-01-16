@@ -19,7 +19,7 @@ goa: gene_association.goa_human
 
 gene_association.goa_human:
 	curl "ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/HUMAN/$@.gz" |\
-	gunzip -c  | head -n 1000 > $@
+	gunzip -c  | head -n 2 > $@
 	
 
 go: go.xml
