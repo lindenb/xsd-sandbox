@@ -6,10 +6,20 @@ GOAXSD=../schemas/bio/goa/goa.xsd
 GOXSD=../schemas/bio/go/go.xsd
 DOIDXSD=../schemas/bio/doid/doid.xsd
 GENERIFXSD=../schemas/bio/do_rif/dorif.xsd
+GENSENLABXSD=../schemas/bio/jensenlab/jensenlab.xsd
 
-.PHONY=all gene_rif goa doid go clean
-all:gene_rif goa doid go 
+.PHONY=all jensenlab gene_rif goa doid go clean
+all:jensenlab gene_rif goa doid go 
 	$(MAKE) clean
+
+jensenlab:
+	mkdir -p tmp
+	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GENSENLABXSD))) -d tmp $(GENSENLABXSD)
+	${JAVAC} -d tmp -sourcepath tmp  `find tmp -name "*.java"`
+	curl -s "http://download.jensenlab.org/human_disease_textmining_filtered.tsv" |\
+		${JAVA}  -cp tmp generated.org.jensenlab.GeneDiseaseAssociations > tmp/jensenlab.xml
+	xmllint  --noout --schema $(GENSENLABXSD) tmp/jensenlab.xml
+	#rm -rf tmp
 
 gene_rif:
 	mkdir -p tmp

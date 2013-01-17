@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:j="http://jensenlab.org/"
+jxb:extensionBindingPrefixes="ci "
+jxb:version="2.0"
+>
+
+<jxb:bindings schemaLocation="jensenlab.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.org.jensenlab"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+
+ <jxb:bindings node="/xs:schema/xs:complexType[@name='GeneDiseaseAssociation']">
+  <ci:code>
+
+ public static final String NS="http://jensenlab.org/";
+ 
+ </ci:code>
+ </jxb:bindings>
+ 
+<jxb:bindings node="/xs:schema/xs:complexType[@name='GeneDiseaseAssociations']">
+  <ci:code>
+  
+  public static final String NS=GeneDiseaseAssociation.NS;
+  
+  private static  void parse(java.io.BufferedReader in) throws
+  		java.io.IOException,
+  		javax.xml.bind.JAXBException,
+  		javax.xml.stream.XMLStreamException
+  	{
+	 javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
+			  	"generated.org.jensenlab"
+			  	);
+	javax.xml.bind.Marshaller marshaller=jaxbCtxt.createMarshaller();
+	marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+	marshaller.setProperty("jaxb.formatted.output",true);
+
+	
+	
+	javax.xml.stream.XMLOutputFactory xmlfactory= javax.xml.stream.XMLOutputFactory.newInstance();
+	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
+	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
+	//w.setDefaultNamespace(NS);
+	w.writeStartDocument("UTF-8","1.0");
+	w.writeStartElement("j","associations",NS);
+	
+	final java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
+	String line;
+	while((line=in.readLine())!=null)
+		{
+		String tokens[]=tab.split(line);
+		GeneDiseaseAssociation rec=new GeneDiseaseAssociation();
+		rec.setEnsemblProtein(tokens[0]);
+		rec.setGeneSymbol(tokens[1]);
+		rec.setDoId(tokens[2]);
+		rec.setDescription(tokens[3]);
+		rec.setZScore(Double.parseDouble(tokens[4]));
+		rec.setConfidence(Double.parseDouble(tokens[4]));
+		
+		javax.xml.bind.JAXBElement&lt;GeneDiseaseAssociation&gt; jxb=new javax.xml.bind.JAXBElement&lt;GeneDiseaseAssociation&gt;(
+			new javax.xml.namespace.QName(NS,"association","j"),
+			GeneDiseaseAssociation.class,
+			rec
+			);
+		marshaller.marshal(jxb, w);
+		}
+	
+	
+	w.writeEndElement();
+	w.writeEndDocument();
+	w.flush();
+	w.close();
+  	}
+    
+ public static void main(String args[]) throws Exception
+  {
+  
+  if(args.length==0)
+	{
+	parse(new java.io.BufferedReader(new java.io.InputStreamReader(System.in)));
+	}
+  else if(args.length==1)
+  	{
+	  parse(new java.io.BufferedReader(new java.io.FileReader(args[0]))); 
+  	}
+  else
+  {
+	  System.err.println("usage: (goa.fil|stdin)");
+	  System.exit(-1);
+  }
+  }
+
+
+</ci:code>
+ </jxb:bindings>
+</jxb:bindings>
+
+</jxb:bindings>
