@@ -5,11 +5,22 @@ XJC=${JAVA_HOME}/bin/xjc
 GOAXSD=../schemas/bio/goa/goa.xsd
 GOXSD=../schemas/bio/go/go.xsd
 DOIDXSD=../schemas/bio/doid/doid.xsd
+GENERIFXSD=../schemas/bio/do_rif/dorif.xsd
 
-
-.PHONY=all goa doid go clean
-all:doid go
+.PHONY=all gene_rif goa doid go clean
+all:gene_rif goa doid go 
 	$(MAKE) clean
+
+gene_rif:
+	mkdir -p tmp
+	${XJC} -extension -Xinject-code -b $(addsuffix .jxb,$(basename $(GENERIFXSD))) -d tmp $(GENERIFXSD)
+	${JAVAC} -d tmp -sourcepath tmp  `find tmp -name "*.java"`
+	curl -s "http://projects.bioinformatics.northwestern.edu/do_rif/do_rif.human.txt" |\
+		${JAVA}  -cp tmp generated.edu.northwestern.bioinformatics.projects.do_rif.GeneRifDatabase > tmp/generif.xml
+	xmllint  --noout --schema $(GENERIFXSD) tmp/generif.xml
+	rm -rf tmp
+
+
 
 goa: gene_association.goa_human
 	mkdir -p tmp

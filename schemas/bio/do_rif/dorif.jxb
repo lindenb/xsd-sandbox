@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings 
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:rif="http://projects.bioinformatics.northwestern.edu/do_rif/"
+jxb:extensionBindingPrefixes="ci "
+jxb:version="2.0"
+>
+
+<jxb:bindings schemaLocation="dorif.xsd">
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.edu.northwestern.bioinformatics.projects.do_rif"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+
+ <jxb:bindings node="/xs:schema/xs:complexType[@name='GeneRif']">
+  <ci:code>
+
+ public static final String NS="http://projects.bioinformatics.northwestern.edu/do_rif/";
+ 
+ </ci:code>
+ </jxb:bindings>
+ 
+<jxb:bindings node="/xs:schema/xs:complexType[@name='GeneRifDatabase']">
+  <ci:code>
+  
+  public static final String NS=GeneRif.NS;
+  
+  private static  void parse(java.io.BufferedReader in) throws
+  		java.io.IOException,
+  		javax.xml.bind.JAXBException,
+  		javax.xml.stream.XMLStreamException
+  	{
+	 javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
+			  	"generated.edu.northwestern.bioinformatics.projects.do_rif"
+			  	);
+	javax.xml.bind.Marshaller marshaller=jaxbCtxt.createMarshaller();
+	marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+	marshaller.setProperty("jaxb.formatted.output",true);
+
+	
+	
+	javax.xml.stream.XMLOutputFactory xmlfactory= javax.xml.stream.XMLOutputFactory.newInstance();
+	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
+	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
+	//w.setDefaultNamespace(NS);
+	w.writeStartDocument("UTF-8","1.0");
+	w.writeStartElement("rif","GeneRifDB",NS);
+	
+	final java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
+	String line;
+	while((line=in.readLine())!=null)
+		{
+		String tokens[]=tab.split(line);
+		GeneRif rec=new GeneRif();
+		rec.setGeneId(Integer.parseInt(tokens[0]));
+		rec.setTitle(tokens[1]);
+		for(String s:tokens[2].split("[,]"))
+			{
+			if(!s.isEmpty()) rec.getPmid().add(Integer.parseInt(s));
+			}
+		rec.setUmls(tokens[3]);
+		rec.setDoId(tokens[4]);
+		
+		javax.xml.bind.JAXBElement&lt;GeneRif&gt; jxb=new javax.xml.bind.JAXBElement&lt;GeneRif&gt;(
+			new javax.xml.namespace.QName(NS,"GeneRif","rif"),
+			GeneRif.class,
+			rec
+			);
+		marshaller.marshal(jxb, w);
+		}
+	
+	
+	w.writeEndElement();
+	w.writeEndDocument();
+	w.flush();
+	w.close();
+  	}
+    
+ public static void main(String args[]) throws Exception
+  {
+  
+  if(args.length==0)
+	{
+	parse(new java.io.BufferedReader(new java.io.InputStreamReader(System.in)));
+	}
+  else if(args.length==1)
+  	{
+	  parse(new java.io.BufferedReader(new java.io.FileReader(args[0]))); 
+  	}
+  else
+  {
+	  System.err.println("usage: (goa.fil|stdin)");
+	  System.exit(-1);
+  }
+  }
+
+
+</ci:code>
+ </jxb:bindings>
+</jxb:bindings>
+
+</jxb:bindings>
