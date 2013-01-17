@@ -31,10 +31,10 @@ go: go.xml
 	${JAVAC} -d tmp -sourcepath tmp  TestSchema.java \
 		`find tmp -name "*.java"` 
 	${JAVA}  -cp tmp TestSchema null \
-		"generated.org.genontology.go:generated.org.genontology.rdf"  $< |\
+		"generated.org.geneontology.go:generated.org.geneontology.rdf"  $< |\
 		head -n 20
-	${JAVA}  -cp tmp generated.org.genontology.go.Go descendants $< GO:0010566
-	${JAVA}  -cp tmp generated.org.genontology.go.Go shortestpath $< GO:1900848
+	${JAVA}  -cp tmp generated.org.geneontology.go.Go descendants $< GO:0010566
+	${JAVA}  -cp tmp generated.org.geneontology.go.Go shortestpath $< GO:1900848
 	rm -rf tmp
 
 go.xml:
