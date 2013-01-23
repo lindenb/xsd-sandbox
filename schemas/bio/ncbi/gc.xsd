@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:gc="ftp://ftp.ncbi.nih.gov/entrez/misc/data/"
+    elementFormDefault="qualified"
+    targetNamespace="ftp://ftp.ncbi.nih.gov/entrez/misc/data/"
+    attributeFormDefault="qualified"
+    >
+ <xs:annotation>
+            <xs:documentation>See ftp://ftp.ncbi.nih.gov/entrez/misc/data/gc.prt</xs:documentation>
+        </xs:annotation>
+
+
+  <xs:complexType name="GeneticCode">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="ncbieaa" type="xs:token"/>
+      <xs:element name="sncbieaa" type="xs:token"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int"/>
+  </xs:complexType>
+     
+
+ <xs:complexType name="Table">
+ 	<xs:annotation>
+            <xs:documentation>Table of Genetic Codes</xs:documentation>
+        </xs:annotation>
+    <xs:sequence>
+      <xs:element name="GeneticCode" type="gc:GeneticCode"  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:element name="GeneticCodeTable" type="gc:Table"/>
+
+</xs:schema>
+
+
+
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gc="ftp://ftp.ncbi.nih.gov/entrez/misc/data/"
+	jxb:extensionBindingPrefixes="gc "
+	jxb:version="2.0"
+	>
+
+<jxb:bindings schemaLocation="gc.xsd">
+ 
+ <jxb:bindings node="/xs:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="generated.gov.nih.ncbi.entrez.misc.data"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+ <jxb:bindings node="/xs:schema/xs:complexType[@name='GeneticCode']">
+  <ci:code>
+
+ public static final String NS="ftp://ftp.ncbi.nih.gov/entrez/misc/data/";
+ private static final GeneticCode STANDARD=new GeneticCode(
+ 	1,"standard",
+ 	"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+ 	""
+ 	);
+ 
+ public GeneticCode()
+ 	{
+ 	}
+ 
+ public GeneticCode(int id,String name,String ncbieaa,String sncbieaa)
+ 	{
+ 	setId(id);
+ 	getName().add(name);
+ 	setNcbieaa(ncbieaa);
+ 	setSncbieaa(sncbieaa);
+ 	}
+
+	/** convert a base to index */
+	private int base2index(char c)
+		{
+		switch(c)
+			{
+			case 'T':case 't': return 0;
+			case 'C': case 'c' : return 1;
+			case 'A': case 'a' : return 2;
+			case 'G': case 'g': return 3;
+			default: return -1;
+			}
+		}
+	/** translate cDNA to aminoacid */
+	public char translate(char b1,char b2,char b3)
+		{
+		int base1= base2index(b1);
+		int base2= base2index(b2);
+		int base3= base2index(b3);
+		if(base1==-1 || base2==-1 || base3==-1)
+			{
+			return '?';
+			}
+		else
+			{
+			return getNcbieaa().charAt(base1*16+base2*4+base3);
+			}
+		}
+	@Override
+	public String toString()
+		{
+		return getName().toString();
+		}
+
+	/** get the standard genetic code */
+	public static GeneticCode getStandard()
+		{
+		return STANDARD;
+		}
+		
+
+</ci:code>
+ </jxb:bindings>
+</jxb:bindings>
+
+</jxb:bindings>
