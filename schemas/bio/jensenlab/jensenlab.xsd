@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:j="http://jensenlab.org/"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
+     version="1.0"
+    elementFormDefault="qualified"
+    targetNamespace="http://jensenlab.org/"
+    attributeFormDefault="unqualified"
+    >
+ <xs:annotation><xs:documentation>Disease-gene associations mined from literature</xs:documentation></xs:annotation>
+   
+
+  
+  <xs:complexType name="GeneDiseaseAssociation">
+  	<xs:annotation><xs:documentation>A Record in GeneRIF</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="ensemblProtein" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Ensembm Protein Identifier.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="geneSymbol" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Pubmed title.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="doId" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>The DiseaseOntology identifier.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>The DiseaseOntology description.</xs:documentation></xs:annotation>
+      </xs:element>
+       <xs:element name="z-score" type="xs:double" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Z-Score.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="confidence" type="xs:double" minOccurs="1" maxOccurs="1">
+      	 <xs:annotation><xs:documentation>Confidence.</xs:documentation></xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+	  
+
+
+
+
+ <xs:complexType name="GeneDiseaseAssociations">
+ <xs:annotation>
+            <xs:documentation>no doc.</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="association" type="j:GeneDiseaseAssociation" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+<xs:element name="associations" type="j:GeneDiseaseAssociations"/>
+
+</xs:schema>
+
+
+
+

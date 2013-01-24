@@ -5,113 +5,75 @@ xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
 xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns:goa="http://www.ebi.ac.uk/GOA"
+xmlns:rif="http://projects.bioinformatics.northwestern.edu/do_rif/"
 jxb:extensionBindingPrefixes="ci "
 jxb:version="2.0"
 >
 
-<jxb:bindings schemaLocation="goa.xsd">
+<jxb:bindings schemaLocation="dorif.xsd">
  <jxb:bindings node="/xs:schema">
     <jxb:schemaBindings>
-      <jxb:package name="generated.uk.ac.ebi.goa"/>
+      <jxb:package name="generated.edu.northwestern.bioinformatics.projects.do_rif"/>
     </jxb:schemaBindings>
   </jxb:bindings>
 
 
- <jxb:bindings node="/xs:schema/xs:complexType[@name='Association']">
+ <jxb:bindings node="/xs:schema/xs:complexType[@name='GeneRif']">
   <ci:code>
 
- public static final String NS="http://www.ebi.ac.uk/GOA";
+ public static final String NS="http://projects.bioinformatics.northwestern.edu/do_rif/";
  
  </ci:code>
  </jxb:bindings>
  
-<jxb:bindings node="/xs:schema/xs:complexType[@name='Associations']">
+<jxb:bindings node="/xs:schema/xs:complexType[@name='GeneRifDatabase']">
   <ci:code>
   
-  public static final String NS=Association.NS;
+  public static final String NS=GeneRif.NS;
   
   private static  void parse(java.io.BufferedReader in) throws
   		java.io.IOException,
   		javax.xml.bind.JAXBException,
   		javax.xml.stream.XMLStreamException
   	{
-	  final String header="!gaf-version: 2.0";
 	 javax.xml.bind.JAXBContext jaxbCtxt=javax.xml.bind.JAXBContext.newInstance(
-			  	"generated.uk.ac.ebi.goa"
+			  	"generated.edu.northwestern.bioinformatics.projects.do_rif"
 			  	);
 	javax.xml.bind.Marshaller marshaller=jaxbCtxt.createMarshaller();
 	marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 	marshaller.setProperty("jaxb.formatted.output",true);
 
-	String line=in.readLine();
-	if(line==null || !line.equals(header))
-		{
-		System.err.println("header is not "+header);
-		System.exit(-1);
-		}
+	
 	
 	javax.xml.stream.XMLOutputFactory xmlfactory= javax.xml.stream.XMLOutputFactory.newInstance();
 	xmlfactory.setProperty(javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
 	javax.xml.stream.XMLStreamWriter w= xmlfactory.createXMLStreamWriter(System.out,"UTF-8");
 	//w.setDefaultNamespace(NS);
 	w.writeStartDocument("UTF-8","1.0");
-	w.writeStartElement("goa","associations",NS);
-	w.writeAttribute("version",header);
+	w.writeStartElement("rif","GeneRifDB",NS);
 	
 	final java.util.regex.Pattern tab=java.util.regex.Pattern.compile("[\t]");
-	final java.util.regex.Pattern pipe=java.util.regex.Pattern.compile("[|]");
+	String line;
 	while((line=in.readLine())!=null)
 		{
 		String tokens[]=tab.split(line);
-		Association rec=new Association();
-		rec.setDb(tokens[0]);
-		rec.setObjectId(tokens[1]);
-		rec.setObjectSymbol(tokens[2]);
+		GeneRif rec=new GeneRif();
+		rec.setGeneId(Integer.parseInt(tokens[0]));
+		rec.setTitle(tokens[1]);
+		for(String s:tokens[2].split("[,]"))
+			{
+			if(!s.isEmpty()) rec.getPmid().add(Integer.parseInt(s));
+			}
+		rec.setUmls(tokens[3]);
+		rec.setDoId(tokens[4]);
 		
-		for(String q: pipe.split(tokens[3]))
-			{
-			if(!q.isEmpty()) rec.getQualifier().add(q);
-			}
-			
-		rec.setGoId(tokens[4]);
-		rec.setDbRef(tokens[5]);
-		rec.setEvidence(tokens[6]);
-		for(String with:  pipe.split(tokens[7]))
-			{
-			if(!with.isEmpty()) rec.getWith().add(with);
-			}
-		rec.setAspect(tokens[8]);
-		rec.setDbObjectName(tokens[9]);
-		for(String with:  pipe.split(tokens[10]))
-			{
-			if(!with.isEmpty()) rec.getSynonym().add(with);
-			}
-		rec.setDbObjectType(tokens[11]);
-		
-		for(String t:  pipe.split(tokens[12]))
-			{
-			if(!t.isEmpty()) rec.getTaxonId().add(t);
-			}
-		
-		rec.setDate(tokens[13]);
-		rec.setAssignedBy(tokens[14]);
-		if(tokens.length>15)
-			{
-			for(String a:  pipe.split(tokens[15]))
-				{
-				if(!a.isEmpty()) rec.getAnnotation().add(a);
-				}
-			}
-		javax.xml.bind.JAXBElement&lt;Association&gt; jxb=new javax.xml.bind.JAXBElement&lt;Association&gt;(
-			new javax.xml.namespace.QName(NS,"association","goa"),
-			Association.class,
+		javax.xml.bind.JAXBElement&lt;GeneRif&gt; jxb=new javax.xml.bind.JAXBElement&lt;GeneRif&gt;(
+			new javax.xml.namespace.QName(NS,"GeneRif","rif"),
+			GeneRif.class,
 			rec
 			);
 		marshaller.marshal(jxb, w);
 		}
-	
-	
 	
 	
 	w.writeEndElement();
