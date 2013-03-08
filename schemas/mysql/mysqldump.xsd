@@ -20,8 +20,8 @@
 
 <xs:complexType name="table_structure">
    <xs:sequence>
-     <xs:element name="field" type="field"/>
-     <xs:element name="key" type="key"/>
+     <xs:element name="field" type="field" minOccurs="0" maxOccurs="unbounded"/>
+     <xs:element name="key" type="key" minOccurs="0" maxOccurs="unbounded"/>
      <xs:element name="options" type="options"/>
    </xs:sequence>
   <xs:attribute name="name" type="xs:string"/>
@@ -38,7 +38,7 @@
 
 <xs:complexType name="key">
 <xs:attribute name="Table" type="xs:string"/>
-<xs:attribute name="Non_unique" type="xs:string"/>
+<xs:attribute name="Non_unique" type="xs:int"/>
 <xs:attribute name="Key_name" type="xs:string"/>
 <xs:attribute name="Seq_in_index" type="xs:int"/>
 <xs:attribute name="Column_name" type="xs:string"/>
@@ -55,14 +55,14 @@
 <xs:attribute name="Version" type="xs:string"/>
 <xs:attribute name="Row_format" type="xs:string"/>
 <xs:attribute name="Rows" type="xs:string"/>
-<xs:attribute name="Avg_row_length" type="xs:string"/>
-<xs:attribute name="Data_length" type="xs:string"/>
-<xs:attribute name="Max_data_length" type="xs:string"/>
-<xs:attribute name="Index_length" type="xs:string"/>
-<xs:attribute name="Data_free" type="xs:string"/>
-<xs:attribute name="Create_time" type="xs:string"/>
-<xs:attribute name="Update_time" type="xs:string"/>
-<xs:attribute name="Check_time" type="xs:string"/>
+<xs:attribute name="Avg_row_length" type="xs:int"/>
+<xs:attribute name="Data_length" type="xs:long"/>
+<xs:attribute name="Max_data_length" type="xs:long"/>
+<xs:attribute name="Index_length" type="xs:long"/>
+<xs:attribute name="Data_free" type="xs:int"/>
+<xs:attribute name="Create_time" type="xs:date"/>
+<xs:attribute name="Update_time" type="xs:date"/>
+<xs:attribute name="Check_time" type="xs:date"/>
 <xs:attribute name="Collation" type="xs:string"/>
 <xs:attribute name="Checksum" type="xs:string"/>
 <xs:attribute name="Create_options" type="xs:string"/>
