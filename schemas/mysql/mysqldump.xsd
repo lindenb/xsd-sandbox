@@ -13,7 +13,7 @@
 
 <xs:complexType name="database">
   <xs:sequence>
-     <xs:element name="table_structure" type="table_structure"/>
+     <xs:element name="table_structure" type="table_structure" minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
   <xs:attribute name="name" type="xs:string"/>
 </xs:complexType>

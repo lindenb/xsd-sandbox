@@ -11,6 +11,50 @@
 
 <jxb:bindings schemaLocation="mysqldump.xsd">
  
+ 
+  <jxb:bindings node="/xs:schema/xs:complexType[@name='field']">
+  <ci:code><![CDATA[
+  
+  public boolean isEnum()
+  	{
+  	return getType().startsWith("enum(");
+  	}
+  	
+   public boolean isSet()
+  	{
+  	return getType().startsWith("set(");
+  	}	
+  	
+  public java.util.List<String> getEnumeration()
+  	{
+  	if(!isEnum() && !isSet()) throw new IllegalStateException("not an enum/set");
+  	java.util.List<String> E=new java.util.ArrayList<String>();
+  	
+  	String t=getType().trim();
+  	int par=t.indexOf("(");
+
+  	t=t.substring(par+1);
+  	t=t.substring(0,t.length()-1);//remove last parenthesis
+
+  	try
+  		{
+  		java.io.StreamTokenizer st=new java.io.StreamTokenizer(new java.io.StringReader(t));
+  		while(st.nextToken() != java.io.StreamTokenizer.TT_EOF){
+		if(st.ttype == java.io.StreamTokenizer.TT_WORD)
+		    	{
+			E.add(st.sval);
+		   	}
+		else { E.add(String.valueOf(st.sval));}
+		   	}
+		return E;
+  		}
+  	catch(java.io.IOException err)
+  		{
+  		throw new RuntimeException(err);
+  		}
+  	}
+  
+ ]]></ci:code></jxb:bindings>
 
  <jxb:bindings node="/xs:schema/xs:complexType[@name='table_structure']">
   <ci:code><![CDATA[
