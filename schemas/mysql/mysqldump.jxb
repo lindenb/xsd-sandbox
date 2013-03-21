@@ -15,6 +15,11 @@
   <jxb:bindings node="/xs:schema/xs:complexType[@name='field']">
   <ci:code><![CDATA[
   
+  public boolean isNil()
+  	{
+  	return !getNull().equals("NO");
+  	}
+  
   public boolean isEnum()
   	{
   	return getType().startsWith("enum(");
@@ -24,7 +29,23 @@
   	{
   	return getType().startsWith("set(");
   	}	
-  	
+  
+  public String getJavaClass()
+  	{
+  	if(isEnum()) return "String";
+  	if(isSet()) return "java.util.Set<java.lang.String>";
+  	if(getType().startsWith("int"))
+  		{
+  		return isNil()?"java.lang.Integer":"int";
+  		}
+  	if(getType().startsWith("double"))
+  		{
+  		return isNil()?"java.lang.Float":"float";
+  		}
+  	return "String";
+  	}
+  
+  
   public java.util.List<String> getEnumeration()
   	{
   	if(!isEnum() && !isSet()) throw new IllegalStateException("not an enum/set");
@@ -62,9 +83,20 @@
    public static class Index
 	   {
 	   private java.util.List<Key> keys=new java.util.ArrayList<Key>();
+	   private boolean internal=false;
 	   public java.util.List<Key> getKeys()
 	   	{
 		return keys;
+	   	}
+	   
+	   public boolean isInternal()
+	   	{
+	   	return internal;
+	   	}
+	   
+	   public boolean isSingleColumn()
+	   	{
+	   	return getKeys().size()==1;
 	   	}
 	   
 	   public String getName()
@@ -96,6 +128,10 @@
 				hash.put(k.getKeyName(),idx);
 				}
 			idx.keys.add(k);
+			if(k.getTable().equals(this.getName()))
+				{
+				idx.internal=true;
+				}
 			java.util.Collections.sort(idx.keys,new java.util.Comparator<Key>()
 				{
 				public int compare(Key a,Key b)
