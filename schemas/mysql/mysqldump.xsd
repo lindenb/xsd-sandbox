@@ -2,7 +2,10 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
    elementFormDefault="unqualified"
    attributeFormDefault="unqualified"
+    xmlns:ext="http://xsd.mysql.com/extension/"
    >
+
+<xs:import namespace="http://xsd.mysql.com/extension/" schemaLocation="mysqldumpext.xsd"/>
 
 <xs:complexType name="mysqldump">
   <xs:sequence>
@@ -25,6 +28,7 @@
      <xs:element name="options" type="options"/>
    </xs:sequence>
   <xs:attribute name="name" type="xs:string"/>
+  <xs:attributeGroup ref="ext:descriptionExt"/>
 </xs:complexType>
 
 <xs:complexType name="field">
@@ -34,6 +38,7 @@
 <xs:attribute name="Key" type="xs:string"/>
 <xs:attribute name="Extra" type="xs:string"/>
 <xs:attribute name="Comment" type="xs:string"/>
+<xs:attributeGroup ref="ext:fieldExt"/>
 </xs:complexType>
 
 <xs:complexType name="key">
