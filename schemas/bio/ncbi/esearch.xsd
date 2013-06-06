@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ncbi="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch"
+    elementFormDefault="unqualified"
+    targetNamespace="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch"
+    attributeFormDefault="unqualified"
+    >
+ <xs:annotation>
+            <xs:documentation>
+            Author: Pierre Lindenbaum PhD
+            
+            see also:
+            
+            http://www.ncbi.nlm.nih.gov/corehtml/query/DTD/index.shtml
+            </xs:documentation>
+  </xs:annotation>
+
+
+
+<xs:group name="eSearchResultOK">
+    <xs:sequence>
+      <xs:element name="Count" type="xs:int" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="RetMax" type="xs:int" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="RetStart" type="xs:int" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="QueryKey" type="xs:token" minOccurs="0" maxOccurs="1"/>     
+      <xs:element name="WebEnv" type="xs:token" minOccurs="0" maxOccurs="1"/>     
+      <xs:element name="IdList" type="ncbi:IdList" minOccurs="0" maxOccurs="1"/>     
+      <xs:element name="TranslationSet" type="ncbi:TranslationSet" minOccurs="1" maxOccurs="1"/>     
+      <xs:element name="TranslationStack" type="ncbi:TranslationStack" minOccurs="0" maxOccurs="1"/>     
+      <xs:element name="QueryTranslation" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+</xs:group>
+
+
+<xs:group name="eSearchResultERR">
+    <xs:sequence>
+      <xs:element name="ERROR" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+</xs:group>
+
+
+  <xs:complexType name="eSearchResult">
+	<xs:sequence>
+		 <xs:choice minOccurs="1" maxOccurs="1">
+		 	<xs:group ref="ncbi:eSearchResultOK"/>
+		 	<xs:group ref="ncbi:eSearchResultERR"/>
+		 </xs:choice>
+		<xs:element name="ErrorList" type="ncbi:ErrorList" minOccurs="0" maxOccurs="1"/>
+		<xs:element name="WarningList" type="ncbi:WarningList" minOccurs="0" maxOccurs="1"/>
+	 </xs:sequence>
+  </xs:complexType>
+   
+  <xs:complexType name="IdList">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>  
+    </xs:sequence>
+  </xs:complexType> 
+   
+  <xs:complexType name="TranslationSet">
+    <xs:sequence>
+      <xs:element name="Translation" type="ncbi:Translation" minOccurs="0" maxOccurs="unbounded"/>  
+    </xs:sequence>
+  </xs:complexType>     
+
+  <xs:complexType name="Translation">
+    <xs:sequence>
+      <xs:element name="From" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="To" type="xs:string" minOccurs="1" maxOccurs="1"/>  
+    </xs:sequence>
+  </xs:complexType>     
+
+
+
+
+  <xs:complexType name="TranslationStack">
+    <xs:sequence>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="TermSet" type="ncbi:TermSet" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="OP" type="xs:token" minOccurs="1" maxOccurs="1"/>
+    </xs:choice>
+    </xs:sequence>
+  </xs:complexType>     
+
+
+  <xs:complexType name="TermSet">
+    <xs:sequence>
+	<xs:element name="Term" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Field" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Count" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Explode" type="xs:token" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>     
+
+<xs:complexType name="ErrorList">
+    <xs:sequence>
+	<xs:element name="PhraseNotFound" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	<xs:element name="FieldNotFound" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>     
+
+<xs:complexType name="WarningList">
+    <xs:sequence>
+	<xs:element name="PhraseIgnored" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	<xs:element name="QuotedPhraseNotFound" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	<xs:element name="OutputMessage" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+ </xs:complexType>     
+  
+  
+<xs:element name="eSearchResult" type="ncbi:eSearchResult"/>
+
+</xs:schema>
+
+
+
+
