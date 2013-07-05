@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd"
+    elementFormDefault="unqualified"
+    targetNamespace="http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd"
+    attributeFormDefault="unqualified"
+    >
+
+  <xs:complexType name="BlastOutput">
+    <xs:sequence>
+	<xs:element name="BlastOutput_program" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_version" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_reference" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_db" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_query-ID" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_query-def" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_query-len" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="BlastOutput_iterations" type="tns:BlastOutput_iterations" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+     
+
+ <xs:complexType name="BlastOutput_iterations">
+    <xs:sequence>
+	<xs:element name="Iteration" type="tns:Iteration" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+ </xs:complexType>
+  
+  
+ <xs:complexType name="Iteration">
+    <xs:sequence>
+	<xs:element name="Iteration_iter-num" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Iteration_query-ID" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Iteration_query-def" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Iteration_query-len" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Iteration_hits" type="tns:Iteration_hits" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+ </xs:complexType>
+ 
+<xs:complexType name="Iteration_hits">
+  <xs:sequence>
+  	<xs:element name="Hit" type="tns:Hit" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Hit">
+  <xs:sequence>
+	<xs:element name="Hit_num" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hit_id" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hit_def" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hit_accession" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hit_len" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hit_hsps" type="tns:Hit_hsps" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Hit_hsps">
+  <xs:sequence>
+    	<xs:element name="Hsp" type="tns:Hsp" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Hsp">
+  <xs:sequence>
+  	<xs:element name="Hsp_num" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_bit-score" type="xs:double" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_score" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_evalue" type="xs:double" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_query-from" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_query-to" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_hit-from" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_hit-to" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_query-frame" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_hit-frame" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_identity" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_positive" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_gaps" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_align-len" type="xs:int" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_qseq" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_hseq" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	<xs:element name="Hsp_midline" type="xs:string" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:element name="BlastOutput" type="tns:BlastOutput"/>
+
+</xs:schema>
+
+
+
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:pubmed="http://www.ncbi.nlm.nih.gov/pubmed/"
+    elementFormDefault="unqualified"
+    targetNamespace="http://www.ncbi.nlm.nih.gov/pubmed/"
+    attributeFormDefault="unqualified"
+    >
+ <xs:annotation>
+            <xs:documentation>
+            Author: Pierre Lindenbaum PhD
+            
+     
+            </xs:documentation>
+  </xs:annotation>
+
+
+<xs:complexType name="PubmedArticleSet">
+    <xs:sequence>
+	<xs:element name="PubmedArticle" type="pubmed:PubmedArticle" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+ </xs:complexType>     
+ 
+<xs:complexType name="PubmedArticle">
+    <xs:sequence>
+	<xs:element name="MedlineCitation" type="pubmed:MedlineCitation" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+</xs:complexType>     
+
+
+<xs:complexType name="MedlineCitation">
+    <xs:sequence>
+	<xs:element name="PMID" type="pubmed:PMID" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="DateCreated" type="pubmed:Date" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="DateCompleted" type="pubmed:Date" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="DateRevised" type="pubmed:Date" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Article" type="pubmed:Article" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+ </xs:complexType> 
+
+<xs:complexType name="Article">
+    <xs:sequence>
+	<xs:element name="Journal" type="pubmed:Journal" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Pagination" type="pubmed:Pagination" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Affiliation" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="DateRevised" type="pubmed:Date" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Article" type="pubmed:Article" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+ </xs:complexType> 
+  
+<xs:complexType name="Date">
+</xs:complexType> 
+
+</xs:schema>
+
+
+
+
